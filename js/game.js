@@ -10,6 +10,25 @@ let gameStarted = false;
 let STAGE_WIDTH, STAGE_HEIGHT;
 let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 
+/*TODO:
+    - Show explanation screen
+    - Start with the first category and load all the cards associated with it
+    - Show the amount of money the person has to start:
+        - 5 X $2.00
+        - 3 X $1.00
+        - 4 X $.25
+        - 5 X $.10
+        - 10 X $.05
+    - When the player chooses an item, it will prompt them with a screen for them to
+    choose which types of change they will have to use.
+    - If a player chooses the wrong amount, it will show and error and have them try again.
+    - If a player chooses the correct amount, it will prompt them to do it with a new category.
+    ^ that repeats for every category until it's gone through all of them
+    - There will also be back buttons for if they want to change the item they choose.
+    - When it has gone through all categories, it will show the amount of money they used.
+
+ */
+
 // bitmap letiables
 let background;
 
@@ -180,6 +199,7 @@ function init() {
  * Displays the end game screen and score.
  */
 function endGame() {
+    //todo show win screen
     gameStarted = false;
 }
 
