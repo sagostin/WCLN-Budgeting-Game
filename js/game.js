@@ -11,7 +11,151 @@ let STAGE_WIDTH, STAGE_HEIGHT;
 let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 
 // bitmap letiables
-let background
+let background;
+
+let json = {
+    categories: [{
+        name: "Vegetables",
+        options: [
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "/img/vegetables/carrot.png"
+            },
+            {
+                name: "Peas",
+                price: 2.00,
+                image: "/img/vegetables/peas.png"
+            },
+            {
+                name: "Asparagus",
+                price: 3.30,
+                image: "/img/vegetables/asparagus.png"
+            },
+            {
+                name: "Corn on the Cob",
+                price: 0.50,
+                image: "/img/vegetables/corncob.png"
+            },
+            {
+                name: "Broccoli",
+                price: 1.90,
+                image: "/img/vegetables/broccoli.png"
+            }
+        ]
+    },
+        {
+            name: "Protein",
+            options: [
+                {
+                    name: "Steak",
+                    price: 3.25,
+                    image: "/img/protein/steak.png"
+                },
+                {
+                    name: "Chicken",
+                    price: 2.50,
+                    image: "/img/protein/chicken.png"
+                },
+                {
+                    name: "Bacon",
+                    price: 1.75,
+                    image: "/img/protein/bacon.png"
+                },
+                {
+                    name: "Ribs",
+                    price: 2.00,
+                    image: "/img/protein/ribs.png"
+                },
+                {
+                    name: "Eggs (2)",
+                    price: 2.00,
+                    image: "/img/protein/eggs.png"
+                }
+            ]
+        },
+        {
+            name: "Fruit",
+            options: [
+                {
+                    name: "Pineapple",
+                    price: 1.40,
+                    image: "/img/fruit/pineapple.png"
+                },
+                {
+                    name: "Apple",
+                    price: 0.75,
+                    image: "/img/fruit/apple.png"
+                },
+                {
+                    name: "Blueberries",
+                    price: 2.25,
+                    image: "/img/fruit/blueberries.png"
+                },
+                {
+                    name: "Kiwi",
+                    price: 0.75,
+                    image: "/img/fruit/kiwi.png"
+                },
+                {
+                    name: "Cantaloupe",
+                    price: 2.00,
+                    image: "/img/fruit/cantaloupe.png"
+                }
+            ]
+        },
+        {
+            name: "Drinks",
+            options: [
+                {
+                    name: "Apple Juice",
+                    price: 1.75,
+                    image: "/img/drinks/applejuice.png"
+                },
+                {
+                    name: "Chocolate Milk",
+                    price: 2.00,
+                    image: "/img/drinks/chocolatemilk.png"
+                },
+                {
+                    name: "Yop",
+                    price: 1.50,
+                    image: "/img/drinks/yop.png"
+                },
+                {
+                    name: "Hot Chocolate",
+                    price: 2.25,
+                    image: "/img/drinks/hotchocolate.png"
+                }
+            ]
+        },
+        {
+            name: "Dessert",
+            options: [
+                {
+                    name: "Ice Cream",
+                    price: 2.10,
+                    image: "/img/dessert/icecream.png"
+                },
+                {
+                    name: "Brownie",
+                    price: 1.85,
+                    image: "/img/dessert/brownie.png"
+                },
+                {
+                    name: "Pie",
+                    price: 2.75,
+                    image: "/img/dessert/pie.png"
+                },
+                {
+                    name: "Pudding",
+                    price: 1.95,
+                    image: "/img/dessert/pudding.png"
+                }
+            ]
+        },
+    ]
+};
 
 /*
  * Called by body onload
