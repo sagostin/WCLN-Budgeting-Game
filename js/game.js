@@ -11,7 +11,6 @@ let STAGE_WIDTH, STAGE_HEIGHT;
 let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 
 /*TODO:
-    - Show explanation screen
     - Start with the first category and load all the cards associated with it
     - Show the amount of money the person has to start:
         - 5 X $2.00
@@ -31,6 +30,7 @@ let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 
 // bitmap letiables
 let background;
+let explination;
 
 let json = {
     categories: [{
@@ -208,6 +208,10 @@ function setupManifest() {
         {
             src: "img/bg.png",
             id: "background"
+        },
+        {
+            src: "img/explination.png",
+            id: "explination"
         }
     ];
 }
@@ -235,6 +239,9 @@ function handleFileLoad(event) {
     if (event.item.id == "background") {
         background = new createjs.Bitmap(event.result);
     }
+    if (event.item.id == "explination") {
+        explination = new createjs.Bitmap(event.result);
+    }
 }
 
 function loadError(evt) {
@@ -251,6 +258,7 @@ function loadComplete(event) {
     createjs.Ticker.addEventListener("tick", update); // call update function
 
     stage.addChild(background);
+    stage.addChild(explination);
 
     initGraphics();
 }
