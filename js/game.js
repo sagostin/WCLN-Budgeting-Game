@@ -10,6 +10,9 @@ let gameStarted = false;
 let STAGE_WIDTH, STAGE_HEIGHT;
 let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 
+//reset this every category TODO
+let cardBoxes = [];
+
 /*TODO:
     - Show explanation screen
     - Start with the first category and load all the cards associated with it
@@ -32,7 +35,22 @@ let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 // bitmap letiables
 let background;
 
+let cards = new Map();
+
 let json = {
+    categories: [{
+        name: "Vegetables",
+        options: [
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            }
+        ]
+    }
+]};
+
+/*let json = {
     categories: [{
         name: "Vegetables",
         options: [
@@ -174,7 +192,7 @@ let json = {
             ]
         },
     ]
-};
+};*/
 
 /*
  * Called by body onload
@@ -210,6 +228,15 @@ function setupManifest() {
             id: "background"
         }
     ];
+
+    for(let category = 0; category < json.categories.length; category++){
+        for(let card = 0; card < json.categories[category].options.length; card++){
+            manifest.push({
+                src: json.categories[category].options[card].image,
+                id: "card-" + category + "-" + card
+            });
+        }
+    }
 }
 
 function startPreload() {
@@ -235,6 +262,10 @@ function handleFileLoad(event) {
     if (event.item.id == "background") {
         background = new createjs.Bitmap(event.result);
     }
+
+    if(event.item.id.startsWith("card")){
+        cards.set(event.item.id, new createjs.Bitmap(event.result));
+    }
 }
 
 function loadError(evt) {
@@ -250,7 +281,7 @@ function loadComplete(event) {
     createjs.Ticker.setFPS(FPS);
     createjs.Ticker.addEventListener("tick", update); // call update function
 
-    stage.addChild(background);
+    //stage.addChild(background);
 
     initGraphics();
 }
@@ -261,6 +292,27 @@ function loadComplete(event) {
  */
 function initGraphics() {
     gameStarted = true;
+
+    loadCardScreen(0);
+}
+
+function loadCardScreen(num){
+    for(let i = 0; i < json.categories[num].options.length; i++){
+        let bitmap = cards.get("card-" + num + "-" + i);
+
+        cardBoxes.push(new createjs.Shape());
+        cardBoxes[i].graphics.beginStroke("black");
+        cardBoxes[i].graphics.drawRect(150, 150, STAGE_WIDTH - 120, 45);
+        //(horizontal offset, vertical offset)
+
+        stage.addChild(cardBoxes[i]);
+        //stage.addChild(bitmap);
+    }
+
+    /*
+    let category = event.item.id.split("-")[1];
+    let card = event.item.id.split("-")[2];
+     */
 }
 
 /**
