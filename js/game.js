@@ -11,7 +11,7 @@ let STAGE_WIDTH, STAGE_HEIGHT;
 let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 
 //reset this every category TODO
-let cardBoxes = [];
+let cardBoxes = new Map();
 
 /*TODO:
     - Show explanation screen
@@ -332,21 +332,19 @@ function initGraphics() {
 
 function loadCardScreen(num) {
     for (let i = 0; i < json.categories[num].options.length; i++) {
-        let bitmap = cards.get("card-" + num + "-" + i);
+        let cardKey = "card-" + num + "-" + i;
+        let bitmap = cards.get(cardKey);
         bitmap.scaleX = ((STAGE_WIDTH / 12)) / (bitmap.image.width);
         bitmap.scaleY = ((STAGE_HEIGHT / 6)) / (bitmap.image.height);
 
-        cardBoxes.push(new createjs.Shape());
-        cardBoxes[i].graphics.beginFill("black");
-
-        console.log(i);
+        cardBoxes.set(cardKey, new createjs.Shape());
+        cardBoxes.get(cardKey).graphics.beginStroke("pink").beginFill("white");
 
         let cardBoxNums = i > 3 ? i - 4 : i;
         let topOffset = i > 3 ? STAGE_HEIGHT - (STAGE_HEIGHT / 3) - 120 : 40;
 
         if (cardBoxNums < 2) {
-            cardBoxes[i].graphics.beginFill("black");
-            cardBoxes[i].graphics.drawRect(
+            cardBoxes.get(cardKey).graphics.drawRect(
                 ((STAGE_WIDTH / 4) * cardBoxNums) + 20,
                 topOffset,
                 (STAGE_WIDTH / 6),
@@ -354,8 +352,7 @@ function loadCardScreen(num) {
             bitmap.x = ((STAGE_WIDTH / 4) * cardBoxNums) + 20 + (STAGE_WIDTH / 6 / 4);
             bitmap.y = topOffset + 10;
         } else {
-            cardBoxes[i].graphics.beginFill("red");
-            cardBoxes[i].graphics.drawRect(STAGE_WIDTH - (20 + (STAGE_WIDTH / 6)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
+            cardBoxes.get(cardKey).graphics.drawRect(STAGE_WIDTH - (20 + (STAGE_WIDTH / 6)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
                 topOffset,
                 (STAGE_WIDTH / 6),
                 STAGE_HEIGHT / 3);
@@ -368,17 +365,15 @@ function loadCardScreen(num) {
         bitmap.on("click", function (event) {
             cardClickHandler(event);
         });
+        cardBoxes.get(cardKey).on("click", function (event) {
+            cardClickHandler(event);
+        });
 
-        stage.addChild(cardBoxes[i]);
+        stage.addChild(cardBoxes.get(cardKey));
         stage.addChild(bitmap);
 
         //TODO make text and add a click handler
     }
-
-    /*
-    let category = event.item.id.split("-")[1];
-    let card = event.item.id.split("-")[2];
-     */
 }
 
 function cardClickHandler(event) {
@@ -388,11 +383,22 @@ function cardClickHandler(event) {
 
     //TODO make this figure out which card was clicked.
     //TODO make transparent thing above all the cards to be able to have them clicked on?
-    cards.forEach(function (value, key, map) {
+    cards.forEach(function (value, key) {
         if (value == event.target) {
             console.log("yes");
             console.log(key);
 
+            //TODO make this this go to the screen to decide how much change you need to use, then after go to the next card display page.
+        }
+        //console.log(card);
+    });
+
+    cardBoxes.forEach(function (value, key) {
+        if (value == event.target) {
+            console.log("yes");
+            console.log(key);
+
+            //TODO make this this go to the screen to decide how much change you need to use, then after go to the next card display page.
         }
         //console.log(card);
     });
