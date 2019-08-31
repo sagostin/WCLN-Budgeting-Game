@@ -45,6 +45,40 @@ let json = {
                 name: "Carrot",
                 price: 1.35,
                 image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            },{
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot",
+                price: 1.35,
+                image: "img/vegetables/carrot.png"
             }
         ]
     }
@@ -299,14 +333,40 @@ function initGraphics() {
 function loadCardScreen(num){
     for(let i = 0; i < json.categories[num].options.length; i++){
         let bitmap = cards.get("card-" + num + "-" + i);
+        bitmap.scaleX = (STAGE_WIDTH / 12) / bitmap.image.width;
+        bitmap.scaleY = (STAGE_HEIGHT / 6) / bitmap.image.height;
 
         cardBoxes.push(new createjs.Shape());
-        cardBoxes[i].graphics.beginStroke("black");
-        cardBoxes[i].graphics.drawRect(150, 150, STAGE_WIDTH - 120, 45);
-        //(horizontal offset, vertical offset)
+        cardBoxes[i].graphics.beginFill("black");
+
+        console.log(i);
+
+        let cardBoxNums = i > 3 ? i - 4 : i;
+        let topOffset = i > 3 ? STAGE_HEIGHT - (STAGE_HEIGHT / 3) - 120 : 40;
+
+        if(cardBoxNums < 2) {
+            cardBoxes[i].graphics.beginFill("black");
+            cardBoxes[i].graphics.drawRect(
+                ((STAGE_WIDTH / 4) * cardBoxNums) + 20,
+                topOffset,
+                (STAGE_WIDTH / 6),
+                STAGE_HEIGHT / 3);
+            bitmap.x = ((STAGE_WIDTH / 4) * cardBoxNums) + 20 + (STAGE_WIDTH / 6 / 4);
+            bitmap.y = topOffset + 10;
+        }else{
+            cardBoxes[i].graphics.beginFill("red");
+            cardBoxes[i].graphics.drawRect(STAGE_WIDTH - (20 + (STAGE_WIDTH / 6)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
+                topOffset,
+                (STAGE_WIDTH / 6),
+                STAGE_HEIGHT / 3);
+
+            bitmap.x = STAGE_WIDTH - (20 + (STAGE_WIDTH / 6) - (STAGE_WIDTH / 6 / 4)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2));
+            bitmap.y = topOffset + 10;
+        }
+        //(horizontal offset, vertical offset, width, height)
 
         stage.addChild(cardBoxes[i]);
-        //stage.addChild(bitmap);
+        stage.addChild(bitmap);
     }
 
     /*
