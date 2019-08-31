@@ -333,8 +333,8 @@ function initGraphics() {
 function loadCardScreen(num) {
     for (let i = 0; i < json.categories[num].options.length; i++) {
         let bitmap = cards.get("card-" + num + "-" + i);
-        bitmap.scaleX = (STAGE_WIDTH / 12) / bitmap.image.width;
-        bitmap.scaleY = (STAGE_HEIGHT / 6) / bitmap.image.height;
+        bitmap.scaleX = ((STAGE_WIDTH / 12)) / (bitmap.image.width + 20);
+        bitmap.scaleY = ((STAGE_HEIGHT / 6)) / (bitmap.image.height + 20);
 
         cardBoxes.push(new createjs.Shape());
         cardBoxes[i].graphics.beginFill("black");
@@ -350,7 +350,7 @@ function loadCardScreen(num) {
                 ((STAGE_WIDTH / 4) * cardBoxNums) + 20,
                 topOffset,
                 (STAGE_WIDTH / 6),
-                STAGE_HEIGHT / 3);
+                STAGE_HEIGHT / 6 + 20);
             bitmap.x = ((STAGE_WIDTH / 4) * cardBoxNums) + 20 + (STAGE_WIDTH / 6 / 4);
             bitmap.y = topOffset + 10;
         } else {
@@ -358,14 +358,14 @@ function loadCardScreen(num) {
             cardBoxes[i].graphics.drawRect(STAGE_WIDTH - (20 + (STAGE_WIDTH / 6)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
                 topOffset,
                 (STAGE_WIDTH / 6),
-                STAGE_HEIGHT / 3);
+                STAGE_HEIGHT / 6 + 20);
 
             bitmap.x = STAGE_WIDTH - (20 + (STAGE_WIDTH / 6) - (STAGE_WIDTH / 6 / 4)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2));
             bitmap.y = topOffset + 10;
         }
         //(horizontal offset, vertical offset, width, height)
 
-        cardBoxes[i].on("click", function (event) {
+        bitmap.on("click", function (event) {
             cardClickHandler(event);
         });
 
