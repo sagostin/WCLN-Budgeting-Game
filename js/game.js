@@ -330,8 +330,8 @@ function initGraphics() {
     loadCardScreen(0);
 }
 
-function loadCardScreen(num){
-    for(let i = 0; i < json.categories[num].options.length; i++){
+function loadCardScreen(num) {
+    for (let i = 0; i < json.categories[num].options.length; i++) {
         let bitmap = cards.get("card-" + num + "-" + i);
         bitmap.scaleX = (STAGE_WIDTH / 12) / bitmap.image.width;
         bitmap.scaleY = (STAGE_HEIGHT / 6) / bitmap.image.height;
@@ -344,7 +344,7 @@ function loadCardScreen(num){
         let cardBoxNums = i > 3 ? i - 4 : i;
         let topOffset = i > 3 ? STAGE_HEIGHT - (STAGE_HEIGHT / 3) - 120 : 40;
 
-        if(cardBoxNums < 2) {
+        if (cardBoxNums < 2) {
             cardBoxes[i].graphics.beginFill("black");
             cardBoxes[i].graphics.drawRect(
                 ((STAGE_WIDTH / 4) * cardBoxNums) + 20,
@@ -353,7 +353,7 @@ function loadCardScreen(num){
                 STAGE_HEIGHT / 3);
             bitmap.x = ((STAGE_WIDTH / 4) * cardBoxNums) + 20 + (STAGE_WIDTH / 6 / 4);
             bitmap.y = topOffset + 10;
-        }else{
+        } else {
             cardBoxes[i].graphics.beginFill("red");
             cardBoxes[i].graphics.drawRect(STAGE_WIDTH - (20 + (STAGE_WIDTH / 6)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
                 topOffset,
@@ -365,14 +365,35 @@ function loadCardScreen(num){
         }
         //(horizontal offset, vertical offset, width, height)
 
+        cardBoxes[i].on("click", function (event) {
+            cardClickHandler(event);
+        });
+
         stage.addChild(cardBoxes[i]);
         stage.addChild(bitmap);
+
+        //TODO make text and add a click handler
     }
 
     /*
     let category = event.item.id.split("-")[1];
     let card = event.item.id.split("-")[2];
      */
+}
+
+function cardClickHandler(event) {
+    //event.target
+    //console.log("test");
+    console.log(event.target);
+
+    //TODO make this figure out which card was clicked.
+    cards.forEach(function (card) {
+        if (card == event.target) {
+            console.log("yes");
+
+        }
+        //console.log(card);
+    });
 }
 
 /**
