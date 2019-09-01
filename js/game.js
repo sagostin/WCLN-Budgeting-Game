@@ -14,8 +14,6 @@ let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 let cardBoxes = new Map();
 
 /*TODO:
-    - Show explanation screen
-    - Start with the first category and load all the cards associated with it
     - Show the amount of money the person has to start:
         - 5 X $2.00
         - 3 X $1.00
@@ -42,42 +40,42 @@ let json = {
         name: "Vegetables",
         options: [
             {
-                name: "Carrot",
-                price: 1.35,
+                name: "Carrot1",
+                price: 12.87,
                 image: "img/vegetables/carrot.png"
             },
             {
-                name: "Carrot",
-                price: 1.35,
+                name: "Carrot2",
+                price: 2.99,
                 image: "img/vegetables/carrot.png"
             },
             {
-                name: "Carrot",
-                price: 1.35,
+                name: "Carrot3",
+                price: 9.99,
                 image: "img/vegetables/carrot.png"
             },
             {
-                name: "Carrot",
-                price: 1.35,
+                name: "Carrot4",
+                price: 99.99,
                 image: "img/vegetables/carrot.png"
             },{
-                name: "Carrot",
+                name: "Carrot5",
+                price: 188.99,
+                image: "img/vegetables/carrot.png"
+            },
+            {
+                name: "Carrot6",
                 price: 1.35,
                 image: "img/vegetables/carrot.png"
             },
             {
-                name: "Carrot",
-                price: 1.35,
+                name: "Carrot7",
+                price: 122.4,
                 image: "img/vegetables/carrot.png"
             },
             {
-                name: "Carrot",
-                price: 1.35,
-                image: "img/vegetables/carrot.png"
-            },
-            {
-                name: "Carrot",
-                price: 1.35,
+                name: "Carrot8",
+                price: 12.33,
                 image: "img/vegetables/carrot.png"
             }
         ]
@@ -330,6 +328,9 @@ function initGraphics() {
     loadCardScreen(0);
 }
 
+let cardNameText = new Map();
+let cardPriceText = new Map();
+
 function loadCardScreen(num) {
     for (let i = 0; i < json.categories[num].options.length; i++) {
         let cardKey = "card-" + num + "-" + i;
@@ -343,22 +344,58 @@ function loadCardScreen(num) {
         let cardBoxNums = i > 3 ? i - 4 : i;
         let topOffset = i > 3 ? STAGE_HEIGHT - (STAGE_HEIGHT / 3) - 120 : 40;
 
+        let nameText = new createjs.Text(json.categories[num].options[i].name, "20px Arial", "#6E3AAF");
+        nameText.textAlign = "center";
+        nameText.textBaseline = "alphabetic";
+
+        let priceText = new createjs.Text("$" + json.categories[num].options[i].price, "20px Arial", "#6E3AAF");
+        priceText.textAlign = "center";
+        priceText.textBaseline = "alphabetic";
+
         if (cardBoxNums < 2) {
             cardBoxes.get(cardKey).graphics.drawRect(
                 ((STAGE_WIDTH / 4) * cardBoxNums) + 20,
                 topOffset,
                 (STAGE_WIDTH / 6),
                 STAGE_HEIGHT / 3);
-            bitmap.x = ((STAGE_WIDTH / 4) * cardBoxNums) + 20 + (STAGE_WIDTH / 6 / 4);
+            bitmap.x = ((STAGE_WIDTH / 4) * cardBoxNums) +
+                20 +
+                (STAGE_WIDTH / 6 / 4);
             bitmap.y = topOffset + 10;
+
+            nameText.x = ((STAGE_WIDTH / 4) * cardBoxNums) +
+                20 +
+                (STAGE_WIDTH / 6 / 2);
+            nameText.y = topOffset + 50 + (bitmap.image.height * bitmap.scaleY);
+
+            priceText.x = ((STAGE_WIDTH / 4) * cardBoxNums) +
+                20 +
+                (STAGE_WIDTH / 6 / 2);
+            priceText.y = topOffset + 75 + (bitmap.image.height * bitmap.scaleY);
         } else {
-            cardBoxes.get(cardKey).graphics.drawRect(STAGE_WIDTH - (20 + (STAGE_WIDTH / 6)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
+            cardBoxes.get(cardKey).graphics.drawRect(
+                STAGE_WIDTH -
+                (20 + (STAGE_WIDTH / 6)) -
+                ((STAGE_WIDTH / 4) * (cardBoxNums - 2)),
+
                 topOffset,
                 (STAGE_WIDTH / 6),
                 STAGE_HEIGHT / 3);
 
-            bitmap.x = STAGE_WIDTH - (20 + (STAGE_WIDTH / 6) - (STAGE_WIDTH / 6 / 4)) - ((STAGE_WIDTH / 4) * (cardBoxNums - 2));
+            bitmap.x = STAGE_WIDTH -
+                (20 + (STAGE_WIDTH / 6) - (STAGE_WIDTH / 6 / 4)) -
+                ((STAGE_WIDTH / 4) * (cardBoxNums - 2));
             bitmap.y = topOffset + 10;
+
+            nameText.x = STAGE_WIDTH -
+                (20 + (STAGE_WIDTH / 6) - (STAGE_WIDTH / 6 / 2)) -
+                ((STAGE_WIDTH / 4) * (cardBoxNums - 2));
+            nameText.y = topOffset + 50 + (bitmap.image.height * bitmap.scaleY);
+
+            priceText.x = STAGE_WIDTH -
+                (20 + (STAGE_WIDTH / 6) - (STAGE_WIDTH / 6 / 2)) -
+                ((STAGE_WIDTH / 4) * (cardBoxNums - 2));
+            priceText.y = topOffset + 75 + (bitmap.image.height * bitmap.scaleY);
         }
         //(horizontal offset, vertical offset, width, height)
 
@@ -369,8 +406,13 @@ function loadCardScreen(num) {
             cardClickHandler(event);
         });
 
+        cardNameText.set(cardKey, nameText);
+        cardPriceText.set(cardKey, priceText);
+
         stage.addChild(cardBoxes.get(cardKey));
         stage.addChild(bitmap);
+        stage.addChild(nameText);
+        stage.addChild(priceText);
 
         //TODO make text and add a click handler
     }
@@ -381,8 +423,6 @@ function cardClickHandler(event) {
     //console.log("test");
     console.log(event.target);
 
-    //TODO make this figure out which card was clicked.
-    //TODO make transparent thing above all the cards to be able to have them clicked on?
     cards.forEach(function (value, key) {
         if (value == event.target) {
             console.log("yes");
