@@ -13,6 +13,8 @@ let stage = new createjs.Stage("gameCanvas"); // canvas id is gameCanvas
 //reset this every category TODO
 let cardBoxes = new Map();
 
+let moneyBalance = new Map();
+
 /*TODO:
     - Show the amount of money the person has to start:
         - 5 X $2.00
@@ -27,6 +29,7 @@ let cardBoxes = new Map();
     ^ that repeats for every category until it's gone through all of them
     - There will also be back buttons for if they want to change the item they choose.
     - When it has gone through all categories, it will show the amount of money they used.
+    - add sounds like a cash register sound and such
 
  */
 
@@ -325,6 +328,13 @@ function loadComplete(event) {
 function initGraphics() {
     gameStarted = true;
 
+    moneyBalance.set(2.00, 5);
+    moneyBalance.set(1.00, 3);
+    moneyBalance.set(0.25, 4);
+    moneyBalance.set(0.10, 5);
+    moneyBalance.set(0.05, 10);
+    balanceTextUpdate();
+
     loadCardScreen(0);
 }
 
@@ -332,6 +342,9 @@ let cardNameText = new Map();
 let cardPriceText = new Map();
 
 function loadCardScreen(num) {
+    stage.removeChild(balanceText);
+    balanceTextUpdate();
+
     for (let i = 0; i < json.categories[num].options.length; i++) {
         let cardKey = "card-" + num + "-" + i;
         let bitmap = cards.get(cardKey);
@@ -403,7 +416,7 @@ function loadCardScreen(num) {
             cardClickHandler(event);
         });
         cardBoxes.get(cardKey).on("click", function (event) {
-            cardClickHandler(event);
+            cardClickHandler(event, cardKey);
         });
 
         cardNameText.set(cardKey, nameText);
@@ -413,35 +426,43 @@ function loadCardScreen(num) {
         stage.addChild(bitmap);
         stage.addChild(nameText);
         stage.addChild(priceText);
-
-        //TODO make text and add a click handler
     }
 }
 
-function cardClickHandler(event) {
+/*
+ * TODO
+ *  - Make it show the clipart of the coins when someone clicks on an item in the category.
+ *  - Display the name of the category at the top of the cards
+ *  - Check if the amount that the person clicked for the money is correct for that item
+ *  - Reset the values & move to the next category
+ *  - Once all categories are done, end the game and display how much they saved vs the most expensive options?
+ */
+
+let clickedCardKey = "";
+
+function cardClickHandler(event, cardKey) {
     //event.target
-    //console.log("test");
-    console.log(event.target);
 
-    cards.forEach(function (value, key) {
-        if (value == event.target) {
-            console.log("yes");
-            console.log(key);
+    clickedCardKey = cardKey;
+    console.log("true " + cardKey);
+}
 
-            //TODO make this this go to the screen to decide how much change you need to use, then after go to the next card display page.
-        }
-        //console.log(card);
+let balanceText;
+
+function balanceTextUpdate() {
+    //stage.removeChild(balanceText);
+
+    let balance = 0.00;
+    moneyBalance.forEach(function (value, key, map) {
+        balance += key * value;
     });
+    balanceText = new createjs.Text("Balance: $" + balance, "20px Arial", "#6E3AAF");
+    balanceText.textBaseline = "alphabetic";
 
-    cardBoxes.forEach(function (value, key) {
-        if (value == event.target) {
-            console.log("yes");
-            console.log(key);
+    balanceText.y = STAGE_HEIGHT - 30;
+    balanceText.x = 20;
 
-            //TODO make this this go to the screen to decide how much change you need to use, then after go to the next card display page.
-        }
-        //console.log(card);
-    });
+    stage.addChild(balanceText);
 }
 
 /**
