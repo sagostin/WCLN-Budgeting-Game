@@ -335,6 +335,8 @@ function initGraphics() {
     moneyBalance.set(0.05, 10);
     balanceTextUpdate();
 
+    console.log(moneyBalance);
+
     loadCardScreen(0);
 }
 
